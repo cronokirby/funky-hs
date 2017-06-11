@@ -31,6 +31,7 @@ library
                      , aeson
                      , lens-aeson
                      , zlib
+                     , transformers
   default-language:    Haskell2010
 
 executable funky-hs-exe

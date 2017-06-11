@@ -5,13 +5,14 @@ module Lib
 
 
 import           Control.Concurrent  (threadDelay)
-import           Control.Monad       (forever, unless)
+import           Control.Monad       (guard, forever, unless)
 import           Control.Monad.Trans (liftIO)
 import           Data.Text           (Text)
 import           Pipes
 import           Pipes.Concurrent
 import           Network.Socket      (withSocketsDo)
 import qualified Data.Text           as T
+import Data.Text.Read (decimal)
 import qualified Data.Text.IO        as T
 import qualified Network.WebSockets  as WS
 
@@ -19,9 +20,16 @@ import qualified Network.WebSockets  as WS
 receiver :: WS.Connection -> Producer Text IO r
 receiver conn = do
   lift $ T.putStrLn "Connected!"
-  forever $ do
-    msg <- lift $ WS.receiveData conn
-    yield msg
+  loop
+
+  where
+    loop = do
+      msg <- lift $ WS.receiveData conn
+      if g . decimal $ msg
+        then yield msg >> loop
+        else loop
+    g (Left _) = False
+    g (Right (x, _)) = x `mod` 2 == 0
 
 printer :: Consumer Text IO ()
 printer = do
