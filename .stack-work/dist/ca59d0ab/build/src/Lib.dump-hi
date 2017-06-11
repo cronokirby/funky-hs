@@ -1,0 +1,361 @@
+
+==================== FINAL INTERFACE ====================
+2017-06-11 07:52:46.246375 UTC
+
+interface funky-hs-0.1.0.0-IF0pP31mnov4Y2vVMpNn76:Lib 8002
+  interface hash: 0a65042526d413210dd4b4b0426ca7ee
+  ABI hash: f6e8767521fb7ef3d9255e568e66a1b0
+  export-list hash: 14cc00c90cbd65ccb3a5f127cc96a07b
+  orphan hash: a7f138002dfc3fd947ab671c0925384e
+  flag hash: c9d0d190e5ed81ea62b3bbfba94a6b7e
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Lib.app
+module dependencies:
+package dependencies: SHA-1.6.4.2@SHA-1.6.4.2-6ZuKopcglGG4yoCGsd9koJ
+                      StateVar-1.1.0.4@StateVar-1.1.0.4-5dJbnTVECtEAhfJXPZKdbO
+                      Win32-2.3.1.1@Win32-2.3.1.1 array-0.5.1.1@array-0.5.1.1
+                      attoparsec-0.13.1.0@attoparsec-0.13.1.0-ECR7lrm2wO64uP6OW8ZTCi
+                      base-4.9.1.0
+                      base64-bytestring-1.0.0.1@base64-bytestring-1.0.0.1-4O9TExPPz6eI82Yj7L4SIj
+                      binary-0.8.3.0@binary-0.8.3.0
+                      blaze-builder-0.4.0.2@blaze-builder-0.4.0.2-CGB8BvrFgghHy5bLy0SFOg
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      case-insensitive-1.2.0.10@case-insensitive-1.2.0.10-7eVVX59t93gCl3XctAmuil
+                      containers-0.5.7.1@containers-0.5.7.1
+                      contravariant-1.4@contravariant-1.4-3UCY3arLvoG71jrGOYoc39
+                      deepseq-1.4.2.0@deepseq-1.4.2.0
+                      entropy-0.3.7@entropy-0.3.7-7YflRgkwZTRIfjmyKo8scy
+                      exceptions-0.8.3@exceptions-0.8.3-ADEDRATtUrMK1JW4zMQ9U
+                      ghc-boot-th-8.0.2@ghc-boot-th-8.0.2 ghc-prim-0.5.0.0
+                      hashable-1.2.6.0@hashable-1.2.6.0-3EXxoqeEgbfAKr6aGkye6x
+                      integer-gmp-1.0.0.1
+                      mmorph-1.0.9@mmorph-1.0.9-5bASEvmIkr5CpdAYXwPsn0
+                      mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6
+                      network-2.6.3.2@network-2.6.3.2-F0OcsS89osODGCGHNf1FTk
+                      pipes-4.3.4@pipes-4.3.4-IzZdzyWEw6TEBmgi7OaP91
+                      pipes-concurrency-2.0.7@pipes-concurrency-2.0.7-EVClMyYbq36HLConat8GL7
+                      random-1.1@random-1.1-9tceXaeYIMZ4JrKq20Egog
+                      stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve
+                      template-haskell-2.11.1.0
+                      text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR
+                      time-1.6.0.1@time-1.6.0.1 transformers-0.5.2.0@transformers-0.5.2.0
+                      websockets-0.10.0.0@websockets-0.10.0.0-DJeqpZPqQLyLtDJKLvWgrI
+                      zlib-0.6.1.2@zlib-0.6.1.2-7negTfm2ujt1gW4wr40MUp
+orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         hashable-1.2.6.0@hashable-1.2.6.0-3EXxoqeEgbfAKr6aGkye6x:Data.Hashable.Generic
+         network-2.6.3.2@network-2.6.3.2-F0OcsS89osODGCGHNf1FTk:Network.Socket
+         stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve:Control.Monad.STM
+         text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text
+         text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text.Lazy
+         text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text.Show
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Calendar.Gregorian
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Format.Parse
+         time-1.6.0.1@time-1.6.0.1:Data.Time.LocalTime.LocalTime
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+family instance modules: attoparsec-0.13.1.0@attoparsec-0.13.1.0-ECR7lrm2wO64uP6OW8ZTCi:Data.Attoparsec.Internal.Types
+                         base-4.9.1.0:Control.Applicative base-4.9.1.0:Data.Complex
+                         base-4.9.1.0:Data.Either base-4.9.1.0:Data.Functor.Compose
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         ghc-boot-th-8.0.2@ghc-boot-th-8.0.2:GHC.LanguageExtensions.Type
+                         template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
+                         text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text
+                         text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text.Lazy
+                         zlib-0.6.1.2@zlib-0.6.1.2-7negTfm2ujt1gW4wr40MUp:Codec.Compression.Zlib.Stream
+import  -/  base-4.9.1.0:Control.Concurrent e3f6962e2eee72e46a7f524818b5ed3e
+import  -/  base-4.9.1.0:Control.Monad f915f187cea611986ebb12dbc69279ab
+import  -/  base-4.9.1.0:GHC.Conc.IO 130e001b62dcd16f34734f77c1912479
+import  -/  base-4.9.1.0:GHC.Conc.Sync 18bcf7264dc8f03029975495d151af25
+import  -/  base-4.9.1.0:GHC.Num 38b8aac8807c096c7f3ca3c1eff02939
+import  -/  base-4.9.1.0:GHC.Show eca5834daba3b6a2bbbe64ab52056707
+import  -/  base-4.9.1.0:Prelude 74b3e204395920329f6de9d97206abe9
+import  -/  base-4.9.1.0:System.Mem a1006599d0e5f24f1210e5842ad792d2
+import  -/  ghc-prim-0.5.0.0:GHC.Types 89f8de4f08018c9177c98d979eae0e45
+import  -/  mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6:Control.Monad.Trans d69bc2e104a90fb918d853b240f7af2e
+import  -/  network-2.6.3.2@network-2.6.3.2-F0OcsS89osODGCGHNf1FTk:Network.Socket e2e659f1c7cc333004207b8e0bae86f5
+import  -/  network-2.6.3.2@network-2.6.3.2-F0OcsS89osODGCGHNf1FTk:Network.Socket.Internal 8ddd08415e264edcd03ad47a04f53d8d
+import  -/  pipes-4.3.4@pipes-4.3.4-IzZdzyWEw6TEBmgi7OaP91:Pipes 67ff9e41e24050895972c876204dac4a
+import  -/  pipes-4.3.4@pipes-4.3.4-IzZdzyWEw6TEBmgi7OaP91:Pipes.Core ba23c01f85d138710405f7a0fb1bc23e
+import  -/  pipes-concurrency-2.0.7@pipes-concurrency-2.0.7-EVClMyYbq36HLConat8GL7:Pipes.Concurrent 6f6d00eb10f32b4cf34671fa4ee1b2b1
+import  -/  text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text 35f976519564888082d42815342d42ed
+import  -/  text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text.IO fab78232fe92972b3e87756f348666e8
+import  -/  text-1.2.2.1@text-1.2.2.1-Ji7hMs2U4BkBwavd4taEVR:Data.Text.Internal 43a9166170aaf8c9b180c2d3ce2cfa3c
+import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Class 953c05e2bceca1b256a90a052f7c1b62
+import  -/  websockets-0.10.0.0@websockets-0.10.0.0-DJeqpZPqQLyLtDJKLvWgrI:Network.WebSockets fd82d4bc105490998746c0efeed35187
+import  -/  websockets-0.10.0.0@websockets-0.10.0.0-DJeqpZPqQLyLtDJKLvWgrI:Network.WebSockets.Client 747dec4399f100f66b24364d368c90e3
+import  -/  websockets-0.10.0.0@websockets-0.10.0.0-DJeqpZPqQLyLtDJKLvWgrI:Network.WebSockets.Connection a7ab72ce7cd90bcf141ba70079f489e3
+import  -/  zlib-0.6.1.2@zlib-0.6.1.2-7negTfm2ujt1gW4wr40MUp:Codec.Compression.Zlib 931789ff0c52b59c75e0e2f0929bc0cf
+88368de20a4d478e793cf6b4804f40d3
+  $s+>> ::
+    (b' -> Pipes.Internal.Proxy a' a b' b GHC.Types.IO r)
+    -> Pipes.Internal.Proxy b' b c' c GHC.Types.IO r
+    -> Pipes.Internal.Proxy a' a c' c GHC.Types.IO r
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,C(U)><S,1*U>,
+     Inline: [NEVER] -}
+88731a1aedccbdc9216547f0af515f01
+  $s>>~ ::
+    Pipes.Internal.Proxy a' a b' b GHC.Types.IO r
+    -> (b -> Pipes.Internal.Proxy b' b c' c GHC.Types.IO r)
+    -> Pipes.Internal.Proxy a' a c' c GHC.Types.IO r
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,C(U)>,
+     Inline: [NEVER] -}
+e7850cb09469de8cd6ac451886120317
+  $sfromInput ::
+    Pipes.Concurrent.Input a -> Pipes.Core.Producer' a GHC.Types.IO ()
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,C(U)>,
+     Unfolding: (\ @ a (eta :: Pipes.Concurrent.Input a) @ x' @ x ->
+                 letrec {
+                   loop :: Pipes.Internal.Proxy x' x () a GHC.Types.IO ()
+                   = Pipes.Internal.M
+                       @ x'
+                       @ x
+                       @ ()
+                       @ a
+                       @ GHC.Types.IO
+                       @ ()
+                       loop1
+                         `cast`
+                       (Sym (GHC.Types.N:IO[0]
+                                 <Pipes.Internal.Proxy x' x () a GHC.Types.IO ()>_R))
+                   loop1 :: GHC.Prim.State# GHC.Prim.RealWorld
+                            -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+                                  Pipes.Internal.Proxy x' x () a GHC.Types.IO () #)
+                     {- Arity: 1, Strictness: <S,U> -}
+                   = \ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                     case GHC.Prim.atomically#
+                            @ (GHC.Base.Maybe a)
+                            eta
+                              `cast`
+                            (Trans
+                                 (Pipes.Concurrent.N:Input[0] <a>_R)
+                                 (GHC.Conc.Sync.N:STM[0] <GHC.Base.Maybe a>_R))
+                            s of ds1 { (#,#) ipv ipv1 ->
+                     (# ipv,
+                        case ipv1 of wild {
+                          GHC.Base.Nothing -> Lib.$sfromInput1 @ x @ x' @ a
+                          GHC.Base.Just a1
+                          -> Pipes.Internal.Respond
+                               @ x'
+                               @ x
+                               @ ()
+                               @ a
+                               @ GHC.Types.IO
+                               @ ()
+                               a1
+                               (\ (b'1 :: ()) -> loop) } #) }
+                 } in
+                 loop) -}
+1059255ab2e7a77885fb8e8e5cca8b5f
+  $sfromInput1 :: Pipes.Internal.Proxy x' x () a GHC.Types.IO ()
+  {- HasNoCafRefs, Strictness: m4,
+     Unfolding: (\ @ x @ x' @ a ->
+                 Pipes.Internal.Pure
+                   @ x'
+                   @ x
+                   @ ()
+                   @ a
+                   @ GHC.Types.IO
+                   @ ()
+                   GHC.Tuple.()) -}
+a48352da12a8ff83f625682987cfe62c
+  $srunEffect2 ::
+    Pipes.Internal.Proxy
+      Pipes.Internal.X () () Pipes.Internal.X GHC.Types.IO r
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, r #)
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,U> -}
+9be653955e21c3e5b5e8d7c51a60d748
+  $stoOutput ::
+    Pipes.Concurrent.Output a -> Pipes.Core.Consumer' a GHC.Types.IO ()
+  {- Arity: 1, Strictness: <L,C(C1(U))>,
+     Unfolding: (\ @ a (eta :: Pipes.Concurrent.Output a) @ y' @ y ->
+                 letrec {
+                   loop :: Pipes.Internal.Proxy () a y' y GHC.Types.IO ()
+                   = Pipes.Internal._bind
+                       @ GHC.Types.IO
+                       @ ()
+                       @ a
+                       @ y'
+                       @ y
+                       @ a
+                       @ ()
+                       GHC.Base.$fMonadIO
+                       (Lib.$stoOutput2 @ a @ y' @ y)
+                       (\ (a1 :: a) ->
+                        Pipes.Internal.M
+                          @ ()
+                          @ a
+                          @ y'
+                          @ y
+                          @ GHC.Types.IO
+                          @ ()
+                          (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                           case GHC.Prim.atomically#
+                                  @ GHC.Types.Bool
+                                  (eta `cast` (Pipes.Concurrent.N:Output[0] <a>_R) a1)
+                                    `cast`
+                                  (GHC.Conc.Sync.N:STM[0] <GHC.Types.Bool>_R)
+                                  s of ds1 { (#,#) ipv ipv1 ->
+                           (# ipv,
+                              case ipv1 of wild {
+                                GHC.Types.False -> Lib.$stoOutput1 @ y' @ a @ y
+                                GHC.Types.True -> loop } #) })
+                            `cast`
+                          (Sym (GHC.Types.N:IO[0]
+                                    <Pipes.Internal.Proxy () a y' y GHC.Types.IO ()>_R)))
+                 } in
+                 loop) -}
+1e6ff12be28350a1639203e1d1a6dbf3
+  $stoOutput1 :: Pipes.Internal.Proxy () a y' y GHC.Types.IO ()
+  {- HasNoCafRefs,
+     Unfolding: (\ @ y' @ a @ y ->
+                 Pipes.Internal.Pure
+                   @ ()
+                   @ a
+                   @ y'
+                   @ y
+                   @ GHC.Types.IO
+                   @ ()
+                   GHC.Tuple.()) -}
+4e14f3cb003fa3c8d3ccf625cd733e5e
+  $stoOutput2 :: Pipes.Internal.Proxy () a y' y GHC.Types.IO a
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (\ @ a @ y' @ y ->
+                 Pipes.Internal.Request
+                   @ ()
+                   @ a
+                   @ y'
+                   @ y
+                   @ GHC.Types.IO
+                   @ a
+                   GHC.Tuple.()
+                   (Pipes.Internal.Pure @ () @ a @ y' @ y @ GHC.Types.IO @ a)) -}
+b2a23809aa32ddd02b54364f8291eb81
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module Lib.$trModule2 Lib.$trModule1) -}
+98fadef3f4ed95ec0d97f463ccf212b0
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Lib"#) -}
+f46c5d5004a12d3a3f06333c5a71daea
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "funky-hs-0.1.0.0-IF0pP31mnov4Y2vVMpNn76"#) -}
+0cf643a06106517e76b7eb15761b75f3
+  app :: GHC.Types.IO ()
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Lib.app1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
+d111288c7c9777796dcf0d542b5aead8
+  app1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (eta :: GHC.Prim.State#
+                             GHC.Prim.RealWorld)[OneShot] ->
+                 case GHC.Prim.seq#
+                        @ ()
+                        @ GHC.Prim.RealWorld
+                        Network.Socket.Internal.withSocketsInit
+                        eta of ds1 { (#,#) ipv ipv1 ->
+                 Network.WebSockets.Client.runClient2
+                   @ ()
+                   Lib.app5
+                   Lib.app4
+                   Lib.app3
+                   Network.WebSockets.Connection.defaultConnectionOptions
+                   (GHC.Types.[]
+                      @ (Data.CaseInsensitive.Internal.CI
+                           Data.ByteString.Internal.ByteString,
+                         Data.ByteString.Internal.ByteString))
+                   Lib.app2
+                     `cast`
+                   (<Network.WebSockets.Connection.Connection>_R
+                    ->_R Sym (GHC.Types.N:IO[0] <()>_R))
+                   ipv }) -}
+808bda1f9143261a9ac71db25fd5d264
+  app2 ::
+    Network.WebSockets.Connection.Connection
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 2 -}
+058e804c14006f7718eed4d05577860f
+  app3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "/"#) -}
+8655c941634915ff11f417a5e09f3014
+  app4 :: GHC.Types.Int
+  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 80#) -}
+a33f80dc7408d7612b5453cae5d9143a
+  app5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "echo.websocket.org"#) -}
+"SPEC/Lib +>> @ IO _ _ _ _ _ _ _" [1] forall @ b'
+                                             @ a'
+                                             @ a
+                                             @ b
+                                             @ r
+                                             @ c'
+                                             @ c
+                                             ($dMonad :: GHC.Base.Monad GHC.Types.IO)
+  Pipes.Core.+>> @ GHC.Types.IO
+                 @ b'
+                 @ a'
+                 @ a
+                 @ b
+                 @ r
+                 @ c'
+                 @ c
+                 $dMonad
+  = Lib.$s+>> @ b' @ a' @ a @ b @ r @ c' @ c
+"SPEC/Lib >>~ @ IO _ _ _ _ _ _ _" [1] forall @ a'
+                                             @ a
+                                             @ b'
+                                             @ b
+                                             @ r
+                                             @ c'
+                                             @ c
+                                             ($dMonad :: GHC.Base.Monad GHC.Types.IO)
+  Pipes.Core.>>~ @ GHC.Types.IO
+                 @ a'
+                 @ a
+                 @ b'
+                 @ b
+                 @ r
+                 @ c'
+                 @ c
+                 $dMonad
+  = Lib.$s>>~ @ a' @ a @ b' @ b @ r @ c' @ c
+"SPEC/Lib fromInput @ IO _" [ALWAYS] forall @ a
+                                            ($dMonadIO :: Control.Monad.IO.Class.MonadIO
+                                                            GHC.Types.IO)
+  Pipes.Concurrent.fromInput @ GHC.Types.IO @ a $dMonadIO
+  = Lib.$sfromInput @ a
+"SPEC/Lib toOutput @ IO _" [ALWAYS] forall @ a
+                                           ($dMonadIO :: Control.Monad.IO.Class.MonadIO
+                                                           GHC.Types.IO)
+  Pipes.Concurrent.toOutput @ GHC.Types.IO @ a $dMonadIO
+  = Lib.$stoOutput @ a
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

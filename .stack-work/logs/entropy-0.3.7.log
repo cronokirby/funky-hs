@@ -1,0 +1,36 @@
+[1 of 2] Compiling Main             ( C:\Users\Lucas\AppData\Local\Temp\stack14676\entropy-0.3.7\Setup.hs, C:\Users\Lucas\AppData\Local\Temp\stack14676\entropy-0.3.7\.stack-work\dist\ca59d0ab\setup\Main.o )
+[2 of 2] Compiling StackSetupShim   ( C:\sr\setup-exe-src\setup-shim-Z6RU0evB.hs, C:\Users\Lucas\AppData\Local\Temp\stack14676\entropy-0.3.7\.stack-work\dist\ca59d0ab\setup\StackSetupShim.o )
+Linking C:\Users\Lucas\AppData\Local\Temp\stack14676\entropy-0.3.7\.stack-work\dist\ca59d0ab\setup\setup.exe ...
+Configuring entropy-0.3.7...
+Result of RDRAND Test: True
+Building entropy-0.3.7...
+Preprocessing library entropy-0.3.7...
+[1 of 2] Compiling System.EntropyWindows ( System\EntropyWindows.hs, .stack-work\dist\ca59d0ab\build\System\EntropyWindows.o )
+
+System\EntropyWindows.hs:80:1: warning: [-Wunsupported-calling-conventions]
+    • the 'stdcall' calling convention is unsupported on this platform,
+      treating as ccall
+    • When checking declaration:
+        foreign import stdcall unsafe "static CryptAcquireContextA" c_cryptAcquireCtx
+          :: Ptr Word32 -> CString -> CString -> Word32 -> Word32 -> IO Int32
+
+System\EntropyWindows.hs:82:1: warning: [-Wunsupported-calling-conventions]
+    • the 'stdcall' calling convention is unsupported on this platform,
+      treating as ccall
+    • When checking declaration:
+        foreign import stdcall unsafe "static CryptGenRandom" c_cryptGenRandom
+          :: Word32 -> Word32 -> Ptr Word8 -> IO Int32
+
+System\EntropyWindows.hs:84:1: warning: [-Wunsupported-calling-conventions]
+    • the 'stdcall' calling convention is unsupported on this platform,
+      treating as ccall
+    • When checking declaration:
+        foreign import stdcall unsafe "static CryptReleaseContext" c_cryptReleaseCtx
+          :: Word32 -> Word32 -> IO Int32
+[2 of 2] Compiling System.Entropy   ( System\Entropy.hs, .stack-work\dist\ca59d0ab\build\System\Entropy.o )
+Running Haddock for entropy-0.3.7...
+Preprocessing library entropy-0.3.7...
+
+System\EntropyWindows.hs:80:1: warning: [-Wunsupported-calling-conventions]
+    Haddock coverage:
+haddock: internal error: <stderr>: hPutChar: invalid argument (invalid character)
