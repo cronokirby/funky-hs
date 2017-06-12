@@ -8,7 +8,6 @@ where
 import Data.Aeson
 import Data.ByteString (ByteString)
 import Data.Function   (on)
-import qualified Data.Text as T
 
 import Network.Funky.Types.User (User)
 import Network.Funky.Types.Base (Snowflake)
@@ -21,7 +20,7 @@ data DMChannel =
   }
 
 instance FromJSON DMChannel where
-  parseJSON (Object o) = DMChannel
+  parseJSON = withObject "DMChannel" $ \o -> DMChannel
     <$> (read <$> o .: "id")
     <*> o .: "recipient"
     <*> o .: "last_message_id"

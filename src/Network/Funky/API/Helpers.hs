@@ -13,7 +13,7 @@ import Control.Monad.Except
 import Control.Monad.Reader
 import Data.Aeson.Lens (key, nth)
 import Data.ByteString (ByteString, append)
-import Data.Text.Encoding (decodeUtf8)
+import Data.Text.Encoding (encodeUtf8, decodeUtf8)
 import Network.Wreq
 import Network.Wreq.Types (Putable, Postable)
 import qualified Data.Aeson as A
@@ -29,16 +29,16 @@ eitherDecode =
   . A.eitherDecode
 
 
-authHeaders :: ByteString -> Options
+authHeaders :: T.Text -> Options
 authHeaders token =
   -- This means we should manually check status codes and provide errors
   -- inside of DiscordM
   defaults
   & checkResponse .~ (Just $ \_ _ -> return ())
-  & header "Authorization" .~ [append "Bot " token]
+  & header "Authorization" .~ [encodeUtf8 $ T.append "Bot " token]
   & header "User-Agent" .~ ["DiscordBot"]
 
-jsonHeaders :: ByteString -> Options
+jsonHeaders :: T.Text -> Options
 jsonHeaders token =
   authHeaders token
   & header "Content-Type" .~ ["application/json"]
@@ -46,7 +46,7 @@ jsonHeaders token =
 apiRoot :: String
 apiRoot = "https://discordapp.com/api/v6/"
 
-wrapReq :: A.FromJSON a => (ByteString -> IO (Response LB.ByteString))
+wrapReq :: A.FromJSON a => (T.Text -> IO (Response LB.ByteString))
         -> DiscordM a
 wrapReq req = do
   token <- asks token
