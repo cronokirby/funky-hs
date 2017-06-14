@@ -3,17 +3,25 @@ module Network.Funky.Events
     ( eventConsumer
     , Handler
     , Event(..)
+    , CommandM
+    , runCommandM
+    , liftDM
     )
 where
 
 import           Data.Aeson         (FromJSON, Value)
 import           Data.Aeson.Types   (parseMaybe, parseJSON)
+import           Data.Char          (isSpace)
+import           Data.HashMap.Strict as HM
+import           Data.Maybe         (listToMaybe)
 import           Control.Concurrent (forkIO)
 import           Control.Monad      (forever)
+import           Control.Monad.Reader
 import           Pipes
 import qualified Data.Text        as T
 import qualified Pipes.Prelude    as P
 
+import Control.Funky.Commands
 import Network.Funky.Gateway
 import Network.Funky.Types
 
@@ -42,6 +50,38 @@ runHandlers st handlers = forever $ do
   evt <- await
   liftIO $ mapM_ (forkIO . void . (`runDiscordM` st) . ($ evt)) handlers
 
-eventConsumer :: DiscordST -> [Handler a] -> Consumer Yield IO ()
-eventConsumer st h =
-  P.map (uncurry mkEvent) >-> filterMaybe >-> runHandlers st h
+type CommandM = ReaderT Message DiscordM
+
+type CommandMap = HashMap T.Text (Command (CommandM ()))
+
+liftDM :: DiscordM a -> CommandM a
+liftDM = lift
+
+runCommandM :: CommandM a -> Message -> DiscordST
+            -> IO (Either DiscordError a)
+runCommandM = (runDiscordM .) . runReaderT
+
+runCommands :: DiscordST -> T.Text -> CommandMap -> Pipe Event Event IO ()
+runCommands st prefix cmds = forever $ do
+  evt <- await
+  liftIO $ handleEVT evt
+  yield evt
+  where
+    handleEVT (MessageCreate msg) =
+      maybe (pure ()) (runCMD msg) $ do
+        t <- T.stripPrefix prefix (msgContent msg)
+        let (first, rest) = T.break isSpace t
+        cmd <- HM.lookup first cmds
+        pure (cmd, rest)
+    handleEVT _ = pure ()
+    runCMD msg (cmd, rest) =
+      void $ runCommandM (runCommand cmd rest) msg st
+
+eventConsumer :: DiscordST -> [Handler a] -> T.Text
+              -> CommandMap
+              -> Consumer Yield IO ()
+eventConsumer state handlers prefix commands =
+  P.map (uncurry mkEvent)
+  >-> filterMaybe
+  >-> runCommands state prefix commands
+  >-> runHandlers state handlers

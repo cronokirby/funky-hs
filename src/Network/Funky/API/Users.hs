@@ -2,7 +2,6 @@
 module Network.Funky.API.Users where
 
 import Data.Aeson
-import Data.HashMap.Lazy (fromList)
 import Data.Text (Text, pack)
 import Network.Wreq
 
@@ -20,7 +19,7 @@ getMe = getAPI "users/@me"
 editUser :: Text -> DiscordM User
 editUser name =
   patchAPI "users/@me" $
-  Object $ fromList [("username", String name)]
+  object ["username" .= String name]
 
 getUserGuilds :: Maybe Period -> Int -> DiscordM [UserGuild]
 getUserGuilds period limit = getAPI $
@@ -44,4 +43,4 @@ getUserDMs = getAPI "users/@me/channels"
 createDM :: Snowflake -> DiscordM DMChannel
 createDM recipient =
   postAPI "users/@me/channels" $
-  Object $ fromList [("recipient_id", String . pack $ show recipient)]
+  object ["recipient_id" .= (String . pack $ show recipient)]

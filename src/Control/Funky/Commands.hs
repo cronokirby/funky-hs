@@ -7,18 +7,20 @@
 #-}
 module Control.Funky.Commands
     ( Func
-    , HList
-    , ReadFuncs
-    , Command
+    , HList(..)
+    , ReadFuncs(..)
+    , Command(..)
     , runCommand
     , parseHelper
+    , wargs
+    , int
     )
 where
 
 
 import GHC.TypeLits
-import Data.Text
-
+import Data.Text as T
+import Data.Text.Read (decimal)
 
 type family Func (xs :: [*]) t where
   Func '[] t = t
@@ -73,3 +75,11 @@ parseHelper split readers = go 0 readers . split
     go _ (RFCons r _)  []       = Left (3, "")
     go n (RFCons r rs) (x : xs) =
       maybe (Left (n, x)) ((<$> go (n+1) rs xs) . HCons) $ r x
+
+
+wargs :: ReadFuncs ts -> (Text -> Either (Int, Text) (HList ts))
+wargs = parseHelper T.words
+
+
+int :: Integral a => Text -> Maybe a
+int = either (const Nothing) (pure . fst) . decimal

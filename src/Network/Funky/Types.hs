@@ -39,7 +39,7 @@ data DiscordError
     | ParseError Text
     deriving (Show)
 
-type DiscordM a = ExceptT DiscordError (ReaderT DiscordST IO) a
+type DiscordM = ExceptT DiscordError (ReaderT DiscordST IO)
 
 
 -- We could use unsafePerformIO here, but since this is only the internal

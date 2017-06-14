@@ -15,7 +15,8 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Network.Funky
+  exposed-modules:     Control.Funky.Commands
+                     , Network.Funky
                      , Network.Funky.Events
                      , Network.Funky.Gateway
                      , Network.Funky.Types
@@ -23,6 +24,11 @@ library
                      , Network.Funky.Types.Channel
                      , Network.Funky.Types.Message
                      , Network.Funky.Types.User
+                     , Network.Funky.API
+                     , Network.Funky.API.Channels
+                     , Network.Funky.API.Helpers
+                     , Network.Funky.API.Types
+                     , Network.Funky.API.Users
   build-depends:       base >= 4.7 && < 5
                      , websockets
                      , mtl
@@ -49,6 +55,7 @@ executable funky-hs-exe
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , funky-hs
+                     , text
   default-language:    Haskell2010
 
 test-suite funky-hs-test
