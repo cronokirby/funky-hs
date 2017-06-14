@@ -49,7 +49,7 @@ apiRoot = "https://discordapp.com/api/v6/"
 wrapReq :: A.FromJSON a => (T.Text -> IO (Response LB.ByteString))
         -> DiscordM a
 wrapReq req = do
-  token <- asks token
+  token <- asks dsToken
   r <- liftIO $ req token
   handleErrors (r ^. responseStatus . statusCode) (r ^. responseBody)
   eitherDecode $ r ^. responseBody

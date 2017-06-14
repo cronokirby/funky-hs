@@ -2,21 +2,26 @@
 module Network.Funky.Gateway
     ( Yield
     , gateway
+    , runGateway
     )
 where
 
 import           Codec.Compression.Zlib    (decompress)
-import           Control.Applicative       (liftA2, (<|>), (<*))
+import           Control.Applicative       (liftA2, (<|>))
 import           Control.Concurrent        hiding (yield)
 import           Control.Concurrent.STM
+import           Control.Lens              ((^.))
 import           Control.Monad             (forever)
 import           Control.Monad.Trans.State hiding (State)
 import           Data.Aeson
+import           Data.Aeson.Lens
 import           Data.Aeson.Types          (parseMaybe, Parser)
 import           Data.Maybe                (fromMaybe)
+import           Network.Wreq as W         hiding (Payload)
 import           Pipes
 import           Pipes.Concurrent
 import           System.Info               (os)
+import           Wuss
 import qualified Data.ByteString.Lazy      as LB
 import qualified Data.Text                 as T
 import qualified Network.WebSockets        as WS
@@ -48,7 +53,7 @@ data Payload = Payload Int (Maybe (T.Text, Int)) PayD
 instance FromJSON Payload where
   parseJSON (Object o) = Payload
     <$> o .: "op"
-    <*> (liftA2 (,) <$> o .:? "s" <*> o .:? "t")
+    <*> (liftA2 (,) <$> o .:? "t" <*> o .:? "s")
     <*> (PayInt  <$> o .: "d" <|>
          PayBool <$> o .: "d" <|>
          PayVal  <$> o .: "d")
@@ -104,6 +109,7 @@ type GatewayM = StateT State IO
 dispatch :: Maybe Payload -> GatewayM (Maybe Yield)
 
 dispatch (Just (Payload 1 _ _)) = do
+  liftIO $ putStrLn "payload 1"
   tvar <- gets tSeq
   sq   <- liftIO $ readTVarIO tvar
   sendJSON $ HeartBeat sq
@@ -114,25 +120,27 @@ dispatch (Just (Payload 9 _ _)) = do
   return Nothing
 
 dispatch (Just (Payload 10 _ (PayVal o))) =
-  identify >> return Nothing <*
+
   fromMaybe (pure ())
   (liftA2 startBeating
   (getObj o (.: "_trace"))
-  (getObj o (.: "heartbeat_interval")))
+  (getObj o (.: "heartbeat_interval"))) *> do
+    identify
+    pure Nothing
 
 dispatch (Just (Payload _ (Just ("READY", sq)) (PayVal o))) = do
   updateSeq sq
   update
-  return Nothing
+  pure Nothing
   where
     update =
       fromMaybe (pure ()) $ do
       session <- getObj o (.: "session_id")
       trc     <- getObj o (.: "_trace")
-      return $ modify (\s -> s {sessionID = session, trace = trc})
+      pure $ modify (\s -> s {sessionID = session, trace = trc})
 
 dispatch (Just (Payload _ (Just ("RESUMED", sq)) (PayVal o))) =
-  return Nothing <*
+  pure Nothing <*
   fromMaybe (pure ())
   (update <$> getObj o (.: "_trace"))
   where
@@ -140,10 +148,10 @@ dispatch (Just (Payload _ (Just ("RESUMED", sq)) (PayVal o))) =
 
 dispatch (Just (Payload _ (Just (t, sq)) (PayVal o))) = do
   updateSeq sq
-  return $ Just (t, o)
+  pure $ Just (t, o)
 
 dispatch _ =
-  return Nothing
+  pure Nothing
 
 
 updateSeq :: Int -> GatewayM ()
@@ -154,10 +162,10 @@ updateSeq sq = do
 identify :: GatewayM ()
 identify = do
   session <- gets sessionID
-  maybe resume sendIdentify session
+  maybe sendIdentify resume session
   where
-    resume = pure ()
-    sendIdentify _ = do
+    resume _ = pure ()
+    sendIdentify = do
       tok  <- gets token
       shrd <- gets shard
       sendJSON $ Identify tok shrd
@@ -176,13 +184,25 @@ beater interval conn tseq = void . forkIO . forever $ do
   WS.sendTextData conn . encode $ HeartBeat sq
   threadDelay (interval * 1000)
 
+-- Running the gateway --
+
+getURL :: IO T.Text
+getURL = do
+  r <- W.get "https://discordapp.com/api/v6/gateway"
+  return $ r ^. responseBody ^. key "url" . _String
+
+runGateway :: WS.ClientApp () -> IO ()
+runGateway ws = do
+  url <- getURL
+  runSecureClient "gateway.discord.gg" 443 "/?v=6&encoding=json" ws
+
 -- Utility --
 
-liftWS :: (WS.Connection -> a -> IO ()) -> a -> StateT State IO ()
+liftWS :: (WS.Connection -> a -> IO ()) -> a -> GatewayM ()
 liftWS f a = gets conn >>= liftIO . flip f a
 
 -- Should be used in the dispatch function only
-sendJSON :: ToJSON a => a -> StateT State IO ()
+sendJSON :: ToJSON a => a -> GatewayM ()
 sendJSON = liftWS WS.sendTextData . encode
 
 getObj :: Value -> (Object -> Parser a) -> Maybe a

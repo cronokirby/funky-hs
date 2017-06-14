@@ -7,7 +7,7 @@ module Network.Funky.Types
     , DiscordError(..)
     , DiscordM
     , DiscordST(..)
-    , mkClient
+    , mkDiscordST
     , runDiscordM
     , testDiscordM
     )
@@ -30,8 +30,8 @@ import Network.Funky.Types.User
 
 data DiscordST =
   DiscordST
-  { token :: !Text
-  , rates :: TVar (HashMap ByteString Int)
+  { dsToken :: !Text
+  , dsRates :: TVar (HashMap ByteString Int)
   }
 
 data DiscordError
@@ -45,8 +45,8 @@ type DiscordM a = ExceptT DiscordError (ReaderT DiscordST IO) a
 -- We could use unsafePerformIO here, but since this is only the internal
 -- representation, we only ever need to create this when we're running a bot,
 -- which means it's not a pain to have this in IO
-mkClient :: Text -> IO DiscordST
-mkClient token = do
+mkDiscordST :: Text -> IO DiscordST
+mkDiscordST token = do
   tvar <- atomically $ newTVar empty
   return $ DiscordST token tvar
 
@@ -56,5 +56,5 @@ runDiscordM = runReaderT . runExceptT
 
 testDiscordM :: Text -> DiscordM a -> IO (Either DiscordError a)
 testDiscordM b dm = do
-  client <- mkClient b
+  client <- mkDiscordST b
   runDiscordM dm client

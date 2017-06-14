@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Network.Funky.Types.Message
-    ( Message
+    ( Message(..)
 
     )
 where
@@ -28,11 +28,12 @@ data Message =
   , msgPinned :: Bool
   , msgWebhookID :: Maybe Text
   }
+  deriving (Show)
 
 instance FromJSON Message where
   parseJSON = withObject "Message" $ \o -> Message
-    <$> o .:  "id"
-    <*> o .:  "channel_id"
+    <$> (read <$> o .:  "id")
+    <*> (read <$> o .:  "channel_id")
     <*> o .:  "author"
     <*> o .:  "content"
     <*> o .:  "timestamp"
@@ -40,9 +41,9 @@ instance FromJSON Message where
     <*> o .:  "tts"
     <*> o .:  "mention_everyone"
     <*> o .:  "mentions"
-    <*> o .:  "mention_roles"
+    <*> (map read <$> o .:  "mention_roles")
     <*> o .:  "pinned"
-    <*> o .:  "webhook_id"
+    <*> o .:?  "webhook_id"
 
 instance Eq Message where
   (==) = (==) `on` msgID
