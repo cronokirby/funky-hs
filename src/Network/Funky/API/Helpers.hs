@@ -5,6 +5,7 @@ module Network.Funky.API.Helpers
     , postAPI
     , putAPI
     , patchAPI
+    , putNAPI
     )
 where
 
@@ -82,6 +83,9 @@ getAPI = customAPI "GET"
 
 deleteAPI :: A.FromJSON a => String -> DiscordM a
 deleteAPI = customAPI "DELETE"
+
+putNAPI :: A.FromJSON a => String -> DiscordM a
+putNAPI = customAPI "PUT"
 
 postAPI :: (Postable p, A.FromJSON a) => String -> p -> DiscordM a
 postAPI = customDataAPI "POST"

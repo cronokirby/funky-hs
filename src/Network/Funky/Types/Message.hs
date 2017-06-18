@@ -13,6 +13,7 @@ import Data.Text       (Text)
 import Network.Funky.Types.User (User)
 import Network.Funky.Types.Base (Snowflake)
 
+
 data Message =
   Message
   { msgID :: !Snowflake

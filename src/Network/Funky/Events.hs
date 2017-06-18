@@ -68,7 +68,7 @@ runCommands st prefix cmds = forever $ do
   yield evt
   where
     handleEVT (MessageCreate msg) =
-      maybe (pure ()) (runCMD msg) $ do
+      maybe (liftIO $ putStrLn "no cmd") (runCMD msg) $ do
         t <- T.stripPrefix prefix (msgContent msg)
         let (first, rest) = T.break isSpace t
         cmd <- HM.lookup first cmds

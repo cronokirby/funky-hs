@@ -8,18 +8,18 @@ module Network.Funky
     , DiscordCommand
     , runClient
     , say
-    , send
+    , say_
     )
 where
 
-import           Data.HashMap.Strict hiding (map)
-import           Control.Concurrent (forkIO)
-import           Control.Monad.Reader
-import           Pipes
-import           Pipes.Concurrent
-import           Network.Socket     (withSocketsDo)
-import           Wuss
-import qualified Data.Text          as T
+import Data.HashMap.Strict hiding (map)
+import Control.Concurrent  (forkIO)
+import Control.Monad.Reader
+import Pipes
+import Pipes.Concurrent
+import Network.Socket      (withSocketsDo)
+import Wuss
+import qualified Data.Text as T
 
 import Control.Funky.Commands
 import Network.Funky.API
@@ -39,7 +39,7 @@ data Client =
   }
 
 mkCMDMap :: [Command a] -> HashMap T.Text (Command a)
-mkCMDMap cmds = fromList $ map (\x -> (commName x, x)) cmds
+mkCMDMap = fromList . map (\x -> (commName x, x))
 
 runClient :: Client -> IO ()
 runClient (Client token prefix commands handlers) = withSocketsDo $ do
@@ -53,11 +53,9 @@ runClient (Client token prefix commands handlers) = withSocketsDo $ do
       >-> eventConsumer st handlers prefix (mkCMDMap commands)
 
 
-reply :: T.Text -> CommandM Message
-reply t = do
-  chan <- asks msgChannel
-  liftDM $ sendMessage chan t
+say :: T.Text -> CommandM Message
+say t = asks msgChannel >>= liftDM . sendMessage t
 
-say :: T.Text -> CommandM ()
-say = (pure () <*) . reply
 
+say_ :: T.Text -> CommandM ()
+say_ = (pure () <*) . say
