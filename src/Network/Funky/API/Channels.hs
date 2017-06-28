@@ -1,3 +1,4 @@
+{-# LANGUAGE DataKinds         #-}
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Network.Funky.API.Channels where
@@ -9,9 +10,11 @@ import           Network.Funky.API.Helpers
 import           Network.Funky.Types
 
 
+channelRoot :: Url 'Https
+channelRoot = apiRoot /: "channels"
+
 getChannel :: IsChannel c => Snowflake -> DiscordM c
-getChannel channel =
-    getAPI ("channels/" ++ show channel)
+getChannel channel = api_ GET (channelRoot /~ channel) mempty
 
 
 data EditChannelArgs
@@ -31,74 +34,71 @@ mkECArgs = object . map (\case
 
 editChannel :: [EditChannelArgs] -> Snowflake -> DiscordM Channel
 editChannel args channel =
-    patchAPI ("channels/" ++ show channel) $ mkECArgs args
+    api PATCH (channelRoot /~ channel) mempty (mkECArgs args)
 
 deleteChannel :: IsChannel c => Snowflake -> DiscordM c
 deleteChannel channel =
-    deleteAPI ("channels/" ++ show channel)
+    api_ DELETE (channelRoot /~ channel) mempty
 
 getMessage :: Snowflake -> Snowflake -> DiscordM Message
 getMessage channel message =
-    getAPI ("channels/"  ++ show channel ++
-            "/messages/" ++ show message)
+    api_ GET (channelRoot /~ channel /: "messages" /~ message) mempty
 
 sendMessage :: Text -> Snowflake -> DiscordM Message
 sendMessage content channel =
-    postAPI ("channels/" ++ show channel ++ "/messages") $
+    api POST (channelRoot /~ channel /: "messages") mempty $
     object ["content" .= content]
+
 
 createReaction :: Text -> Snowflake -> Snowflake -> DiscordM ()
 createReaction emoji channel message =
-    putNAPI ("channels/"   ++ show channel ++
-             "/messages/"  ++ show message ++
-             "/reactions/" ++ unpack emoji ++ "/@me")
+    api_ PUT (channelRoot /~ channel /: "messages"
+                          /~ message /: "reactions"
+                          /~ emoji   /: "@me") mempty
 
 deleteOwnReaction :: Text -> Snowflake -> Snowflake -> DiscordM ()
 deleteOwnReaction emoji channel message =
-    deleteAPI ("channels/"   ++ show channel ++
-               "/messages/  "++ show message ++
-               "/reactions/" ++ unpack emoji ++ "/@me")
+    api_ DELETE (channelRoot /~ channel /: "messages"
+                             /~ message /: "reactions"
+                             /~ emoji   /: "@me") mempty
 
 deleteReaction :: Text -> Snowflake -> Snowflake
                -> Snowflake -> DiscordM ()
 deleteReaction emoji channel message user =
-    deleteAPI ("channels/"   ++ show channel ++
-               "/messages/"  ++ show message ++
-               "/reactions/" ++ unpack emoji ++
-               "/"           ++ show user)
+    api_ DELETE (channelRoot /~ channel /: "messages"
+                             /~ message /: "reactions"
+                             /~ emoji   /~ user) mempty
 
 getReactions :: Text -> Snowflake -> Snowflake -> DiscordM [User]
 getReactions emoji channel message =
-    getAPI ("channels/"   ++ show channel ++
-            "/messages/"  ++ show message ++
-            "/reactions/" ++ unpack emoji)
+    api_ GET (channelRoot /~ channel /: "messages"
+                          /~ message /: "reactions"
+                          /~ emoji) mempty
 
 deleteReactions :: Snowflake -> Snowflake -> DiscordM ()
 deleteReactions channel message =
-    deleteAPI ("channels/"  ++ show channel ++
-               "/messages/" ++ show message ++ "/reactions")
+    api_ DELETE
+    (channelRoot /~ channel /: "messages" /~ message /: "reactions")
+    mempty
 
 editMessage :: Text -> Snowflake -> Snowflake -> DiscordM Message
 editMessage content channel message =
-    patchAPI ("channels/" ++ show channel ++
-              "/messages/" ++ show message) $
+    api PATCH (channelRoot /~ channel /: "messages" /~ message) mempty $
     object ["content" .= content]
 
 deleteMessage :: Snowflake -> Snowflake -> DiscordM ()
 deleteMessage channel message =
-    deleteAPI ("channels/" ++ show channel
-               ++ "/messages/" ++ show message)
+    api_ DELETE (channelRoot /~ channel /: "messages" /~ message) mempty
 
 bulkDeleteMessages :: Snowflake -> [Snowflake] -> DiscordM ()
 bulkDeleteMessages channel messages =
-    postAPI ("channels/" ++ show channel ++ "/messages/bulk-delete") $
+    api POST (channelRoot /~ channel /: "messages" /: "bulk-delete") mempty $
     object ["messages" .= messages]
 
 editChannelPerms :: Text -> Int -> Int
                  -> Snowflake -> Snowflake ->DiscordM ()
 editChannelPerms typ allow deny channel overwrite =
-    putAPI ("channels/"     ++ show channel ++
-            "/permissions/" ++ show overwrite) $
+    api PUT (channelRoot /~ channel /: "permissions" /~ overwrite) mempty $
     object [ "allow" .= allow
            , "deny"  .= deny
            , "type"  .= typ

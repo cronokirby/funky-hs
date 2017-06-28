@@ -1,94 +1,56 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DataKinds             #-}
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE TypeSynonymInstances  #-}
 module Network.Funky.API.Helpers
-    ( getAPI
-    , deleteAPI
-    , postAPI
-    , putAPI
-    , patchAPI
-    , putNAPI
+    ( module Network.HTTP.Req
+    , module Data.Monoid
+    , apiRoot
+    , api
+    , api_
     )
 where
 
-import Control.Lens
-import Control.Monad.Except
-import Control.Monad.Reader
-import Data.Aeson.Lens (key, nth)
-import Data.ByteString (ByteString, append)
-import Data.Text.Encoding (encodeUtf8, decodeUtf8)
-import Network.Wreq
-import Network.Wreq.Types (Putable, Postable)
-import qualified Data.Aeson as A
-import qualified Data.ByteString.Lazy as LB
-import qualified Data.Text as T
+import           Control.Monad.Reader
+import           Data.Aeson           (FromJSON, ToJSON)
+import           Data.ByteString      (ByteString, append)
+import           Data.Monoid          (mconcat, mempty, (<>))
+import           Data.Text            (Text)
+import           Data.Text.Encoding   (encodeUtf8)
+import           Network.HTTP.Req
 
-import Network.Funky.Types
+import           Network.Funky.Types
 
 
-eitherDecode :: A.FromJSON a => LB.ByteString -> DiscordM a
-eitherDecode =
-  either (throwError . ParseError . T.pack) return
-  . A.eitherDecode
+apiRoot :: Url 'Https
+apiRoot = https "discordapp.com" /: "api" /: "v6"
+
+authHeaders :: Text -> Option scheme
+authHeaders token = mconcat . map (uncurry header) $
+    [ ("Authorization", "Bot " `append` encodeUtf8 token)
+    , ("User-Agent", "DiscordBot")
+    ]
+
+jsonHeaders :: Option scheme
+jsonHeaders = header "Content-Type" "application/json"
 
 
-authHeaders :: T.Text -> Options
-authHeaders token =
-  -- This means we should manually check status codes and provide errors
-  -- inside of DiscordM
-  defaults
-  & checkResponse .~ (Just $ \_ _ -> return ())
-  & header "Authorization" .~ [encodeUtf8 $ T.append "Bot " token]
-  & header "User-Agent" .~ ["DiscordBot"]
+baseAPI :: (FromJSON r, HttpBody b, HttpMethod h,
+            HttpBodyAllowed (AllowsBody h) (ProvidesBody b)) =>
+           b -> h -> Url s -> Option s -> DiscordM r
+baseAPI body method url options = responseBody <$> do
+    token <- asks dsToken
+    req method url body jsonResponse (authHeaders token <> options)
 
-jsonHeaders :: T.Text -> Options
-jsonHeaders token =
-  authHeaders token
-  & header "Content-Type" .~ ["application/json"]
+api_ :: (FromJSON r, HttpMethod h,
+         HttpBodyAllowed (AllowsBody h) 'NoBody) =>
+        h -> Url s -> Option s -> DiscordM r
+api_ = baseAPI NoReqBody
 
-apiRoot :: String
-apiRoot = "https://discordapp.com/api/v6/"
+api :: (ToJSON p, FromJSON r, HttpMethod h,
+        HttpBodyAllowed (AllowsBody h) 'CanHaveBody) =>
+        h -> Url s -> Option s -> p -> DiscordM r
+api method url options payload =
+    baseAPI (ReqBodyJson payload) method url (jsonHeaders <> options)
 
-wrapReq :: A.FromJSON a => (T.Text -> IO (Response LB.ByteString))
-        -> DiscordM a
-wrapReq req = do
-  token <- asks dsToken
-  r <- liftIO $ req token
-  handleErrors (r ^. responseStatus . statusCode) (r ^. responseBody)
-  eitherDecode $ r ^. responseBody
-
--- TODO provide better errors here
-handleErrors :: Int -> LB.ByteString -> DiscordM ()
-handleErrors code body
-  | code `elem` [200..299] =
-    return ()
-  | otherwise              =
-    throwError $ APIError code (decodeUtf8 . LB.toStrict $ body)
-
-customAPI :: A.FromJSON a => String -> String -> DiscordM a
-customAPI reqType end = wrapReq $ \t ->
-  customMethodWith reqType (authHeaders t) (apiRoot ++ end)
-
-customDataAPI :: (Postable p, A.FromJSON a) =>
-                 String -> String -> p -> DiscordM a
-customDataAPI reqType end p = wrapReq $ \t ->
-  customPayloadMethodWith reqType (jsonHeaders t) (apiRoot ++ end) p
-
--- Public API
-
-putAPI :: (Putable p, A.FromJSON a) => String -> p -> DiscordM a
-putAPI end p = wrapReq $ \t ->
-  putWith (jsonHeaders t) (apiRoot ++ end) p
-
-getAPI :: A.FromJSON a => String -> DiscordM a
-getAPI = customAPI "GET"
-
-deleteAPI :: A.FromJSON a => String -> DiscordM a
-deleteAPI = customAPI "DELETE"
-
-putNAPI :: A.FromJSON a => String -> DiscordM a
-putNAPI = customAPI "PUT"
-
-postAPI :: (Postable p, A.FromJSON a) => String -> p -> DiscordM a
-postAPI = customDataAPI "POST"
-
-patchAPI :: (Postable p, A.FromJSON a) => String -> p -> DiscordM a
-patchAPI = customDataAPI "PATCH"

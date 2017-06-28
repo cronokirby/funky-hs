@@ -50,7 +50,6 @@ runClient (Client token prefix commands handlers) = withSocketsDo $ do
         runEffect $ fromInput input
             >-> eventConsumer st handlers prefix (mkCMDMap commands)
 
-
 say :: Text -> CommandM Message
 say t = asks msgChannel >>= liftDM . sendMessage t
 

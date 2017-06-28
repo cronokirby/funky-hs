@@ -1,35 +1,40 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Control.Monad.IO.Class
-import Data.Monoid ((<>))
-import Data.Text
+import           Control.Monad.Except
+import           Control.Monad.IO.Class (liftIO)
+import           Data.Monoid            ((<>))
+import           Data.Text
+import           System.Environment
 
-import Network.Funky
+import           Network.Funky
 
 
-bot :: Client
-bot =
+bot :: String -> Client
+bot t =
   Client
-  { token    = "MjY3MjM1NDYyMTIzNDg3MjMy.DCYMeQ.Lc6FLa80unMSzOw4T6GGFSBlgck"
+  { token    = pack t
   , prefix   = "!"
   , commands = [add, ping]
   , handlers = [handler]
   }
 
 main :: IO ()
-main = runClient bot
+main = runClient . bot =<< getEnv "DISCORD_TOKEN1"
 
 handler :: Handler ()
 handler (MessageCreate m) = liftIO $ print $ msgContent m
-handler _ = liftIO $ putStrLn "foo"
+handler _                 = liftIO $ putStrLn "foo"
 
 ping :: DiscordCommand
 ping =
   Command
   "ping"
   (const $ pure HNil)
-  (say_ "pong!")
+  (do
+    b <- say "pong"
+    liftIO . print $ b
+  `catchError` (liftIO . print) )
   (\_ _ -> say_ "An error occurred?")
 
 add :: DiscordCommand

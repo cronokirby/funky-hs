@@ -57,6 +57,7 @@ executable funky-hs-exe
   build-depends:       base
                      , funky-hs
                      , text
+                     , mtl
   default-language:    Haskell2010
 
 test-suite funky-hs-test

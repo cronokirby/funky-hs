@@ -67,10 +67,10 @@ instance FromJSON Channel where
       where
         parseChannelType :: Int -> ChannelType
         parseChannelType c = case c of
-            0 -> TextChannel
             1 -> PrivateChannel
             2 -> VoiceChannel
             3 -> GroupChannel
+            _ -> TextChannel
 
 instance Eq Channel where
     (==) = (==) `on` chID
