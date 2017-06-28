@@ -4,4 +4,6 @@ module Network.Funky.Types.Base
     )
 where
 
-type Snowflake = Integer
+import Data.Word (Word64)
+
+type Snowflake = Word64
