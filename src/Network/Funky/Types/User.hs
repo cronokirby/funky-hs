@@ -25,7 +25,7 @@ data User = User
     deriving (Show)
 
 instance FromJSON User where
-    parseJSON (Object o) = User
+    parseJSON = withObject "User" $ \o -> User
         <$> (read <$> o .:  "id")
         <*> o .:  "username"
         <*> o .:  "discriminator"
@@ -48,7 +48,7 @@ data UserGuild = UserGuild
     }
 
 instance FromJSON UserGuild where
-    parseJSON (Object o) = UserGuild
+    parseJSON = withObject "UserGuild" $ \o -> UserGuild
         <$> (read <$> o .: "id")
         <*> o .: "name"
         <*> o .: "icon"
