@@ -1,9 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
+import Control.Monad.IO.Class
 import Data.Monoid ((<>))
 import Data.Text
-import Control.Monad.IO.Class
 
 import Network.Funky
 
@@ -11,7 +11,7 @@ import Network.Funky
 bot :: Client
 bot =
   Client
-  { token    = "token"
+  { token    = "MjY3MjM1NDYyMTIzNDg3MjMy.DCYMeQ.Lc6FLa80unMSzOw4T6GGFSBlgck"
   , prefix   = "!"
   , commands = [add, ping]
   , handlers = [handler]
@@ -29,13 +29,13 @@ ping =
   Command
   "ping"
   (const $ pure HNil)
-  (say "pong!")
-  (\_ _ -> say "An error occurred?")
+  (say_ "pong!")
+  (\_ _ -> say_ "An error occurred?")
 
 add :: DiscordCommand
 add =
   Command
   "add"
   (wargs $ int `RFCons` int `RFCons` RFNil)
-  (\a b -> say $ "The answer is: " <> (pack . show $ a + b))
-  (\_ _ -> say "Please give me 2 integers")
+  (\a b -> say_ $ "The answer is: " <> (pack . show $ a + b))
+  (\_ _ -> say_ "Please give me 2 integers")
