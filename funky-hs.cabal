@@ -29,7 +29,6 @@ library
                      , Network.Funky.Types.Channel
                      , Network.Funky.Types.Message
                      , Network.Funky.Types.User
-
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , bytestring
@@ -39,7 +38,7 @@ library
                      , network
                      , pipes
                      , pipes-concurrency
-                     , req=0.2.*
+                     , req==0.2.*
                      , stm
                      , text
                      , transformers

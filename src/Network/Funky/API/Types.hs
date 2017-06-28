@@ -4,8 +4,8 @@ module Network.Funky.API.Types
     )
 where
 
-import Network.Funky.Types.User (Snowflake)
+import           Network.Funky.Types.User (Snowflake)
 
 data Period
-   = Before Snowflake
-   | After Snowflake
+     = Before Snowflake
+     | After Snowflake

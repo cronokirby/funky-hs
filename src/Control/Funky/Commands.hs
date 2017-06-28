@@ -1,10 +1,8 @@
-{-# LANGUAGE
-    DataKinds
-  , TypeFamilies
-  , TypeOperators
-  , GADTs
-  , OverloadedStrings
-#-}
+{-# LANGUAGE DataKinds         #-}
+{-# LANGUAGE GADTs             #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeFamilies      #-}
+{-# LANGUAGE TypeOperators     #-}
 module Control.Funky.Commands
     ( Func
     , HList(..)
@@ -18,23 +16,22 @@ module Control.Funky.Commands
 where
 
 
-import GHC.TypeLits
-import Data.Text as T
-import Data.Text.Read (decimal)
+import           Data.Text      as T
+import           Data.Text.Read (decimal)
 
 type family Func (xs :: [*]) t where
-  Func '[] t = t
-  Func (x ': xs) t = x -> Func xs t
+    Func '[] t = t
+    Func (x ': xs) t = x -> Func xs t
 
 
 data HList :: [*] -> * where
-  HNil :: HList '[]
-  HCons :: a -> HList ts -> HList (a ': ts)
+    HNil :: HList '[]
+    HCons :: a -> HList ts -> HList (a ': ts)
 
 infixr 7 `HCons`
 
 callHList :: HList ts -> Func ts t -> t
-callHList HNil f = f
+callHList HNil f           = f
 callHList (x `HCons` xs) f = callHList xs (f x)
 
 
@@ -50,12 +47,12 @@ data Command :: * -> * where
 -- and otherwise using the "bad" handle to produce an output.
 runCommand :: Command a -> Text -> a
 runCommand (Command _ parser good bad) =
-  either (uncurry bad) (`callHList` good) . parser
+    either (uncurry bad) (`callHList` good) . parser
 
 
 data ReadFuncs :: [*] -> * where
-  RFNil :: ReadFuncs '[]
-  RFCons :: (Text -> Maybe a) -> ReadFuncs ts -> ReadFuncs (a ': ts)
+    RFNil :: ReadFuncs '[]
+    RFCons :: (Text -> Maybe a) -> ReadFuncs ts -> ReadFuncs (a ': ts)
 
 infixr 7 `RFCons`
 
@@ -74,7 +71,7 @@ parseHelper split readers = go 0 readers . split
     go _ RFNil  _               = Right HNil
     go _ (RFCons r _)  []       = Left (3, "")
     go n (RFCons r rs) (x : xs) =
-      maybe (Left (n, x)) ((<$> go (n+1) rs xs) . HCons) $ r x
+        maybe (Left (n, x)) ((<$> go (n+1) rs xs) . HCons) $ r x
 
 
 wargs :: ReadFuncs ts -> (Text -> Either (Int, Text) (HList ts))

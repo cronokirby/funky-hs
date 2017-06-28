@@ -1,13 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Network.Funky.API.Users where
 
-import Data.Aeson
-import Data.Text (Text, pack)
-import Network.Wreq
+import           Data.Aeson
+import           Data.Text                 (Text, pack)
 
-import Network.Funky.Types
-import Network.Funky.API.Helpers
-import Network.Funky.API.Types
+import           Network.Funky.API.Helpers
+import           Network.Funky.API.Types
+import           Network.Funky.Types
 
 
 getUser :: Snowflake -> DiscordM User
@@ -18,14 +17,14 @@ getMe = getAPI "users/@me"
 
 editUser :: Text -> DiscordM User
 editUser name =
-  patchAPI "users/@me" $
-  object ["username" .= String name]
+    patchAPI "users/@me" $
+    object ["username" .= String name]
 
 getUserGuilds :: Maybe Period -> Int -> DiscordM [UserGuild]
 getUserGuilds period limit = getAPI $
-  "users/@me/guilds?limit="
-  ++ show (adjust limit)
-  ++ maybe "" query period
+    "users/@me/guilds?limit="
+    ++ show (adjust limit)
+    ++ maybe "" query period
   where
     adjust n
       | n < 0     = 0
@@ -42,5 +41,5 @@ getUserDMs = getAPI "users/@me/channels"
 
 createDM :: Snowflake -> DiscordM DMChannel
 createDM recipient =
-  postAPI "users/@me/channels" $
-  object ["recipient_id" .= (String . pack $ show recipient)]
+    postAPI "users/@me/channels" $
+    object ["recipient_id" .= (String . pack $ show recipient)]
